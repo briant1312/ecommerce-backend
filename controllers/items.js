@@ -14,6 +14,7 @@ async function create(req, res) {
             }
         }
         
+        if(price) fields += ", price";
         if(qty) fields += ", qty";
         if(image_url) fields += ", image_url";
 
@@ -23,8 +24,8 @@ async function create(req, res) {
         );
         res.json(newItem);
     } catch (error) {
-        res.status(400).json("error creating item");
-        // res.status(400).json(error.message);
+        // res.status(400).json("error creating item");
+        res.status(400).json(error.message);
     }
 }
 
