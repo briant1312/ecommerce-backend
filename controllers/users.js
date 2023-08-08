@@ -58,6 +58,7 @@ async function logIn(req, res) {
     }
 }
 
+// this route is only for testing and should be removed
 async function index(req, res) {
     try {
         const users = await db.any('SELECT * FROM users');
