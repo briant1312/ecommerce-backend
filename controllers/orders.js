@@ -39,7 +39,7 @@ async function addItemToOrder(req, res) {
             })
     }) 
         .then(() => {
-            res.status(204).json("added item to order");
+            res.sendStatus(204);
         })
         .catch(error => {
             // res.status(400).json("error creating order");
@@ -57,7 +57,7 @@ async function removeItemFromOrder(req, res) {
             })
     })
         .then(() => {
-            res.status(204).json("removed item from order");
+            res.sendStatus(204);
         })
         .catch(error => {
             // res.status(400).json("error creating order");
