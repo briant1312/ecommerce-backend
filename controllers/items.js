@@ -58,7 +58,7 @@ async function deleteOne(req, res) {
         await db.none(
             'DELETE FROM items WHERE id=$1', [id]
         );
-        res.status(204).json(`Item id ${id} removed from database`);
+        res.sendStatus(204);
     } catch (error) {
         res.status(400).json("error fetching item");
     }
