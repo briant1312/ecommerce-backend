@@ -2,13 +2,13 @@ const db = require("../config/database");
 
 async function create(req, res) {
     try {
-        const { name, description, qty, price, image_url } = req.body;
+        const { name, description, category, price, qty, image_url } = req.body;
 
-        let fields = "name, description";
-        let values = [name, description, price, qty, image_url];
-        let valueStr = "$1, $2";
+        let fields = "name, description, category";
+        let values = [name, description, category, price, qty, image_url];
+        let valueStr = "$1, $2, $3";
 
-        for(let i = 2; i < values.length; i++) {
+        for(let i = 3; i < values.length; i++) {
             if(values[i]) {
                 valueStr += `, $${i + 1}`
             }
@@ -33,6 +33,20 @@ async function index(req, res) {
     try {
         const items = await db.any(
             'SELECT * FROM items'
+        )
+        res.json(items);
+
+    } catch (error) {
+        res.status(400).json("error fetching items");
+    }
+}
+
+async function indexCategory(req, res) {
+    const category = req.params.category;
+    try {
+        const items = await db.any(
+            'SELECT * FROM items WHERE category=$1',
+            [category]
         )
         res.json(items);
     } catch (error) {
@@ -96,5 +110,6 @@ module.exports = {
     index,
     show,
     deleteOne,
-    update
+    update,
+    indexCategory,
 }

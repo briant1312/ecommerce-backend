@@ -4,6 +4,7 @@ const itemsCtrl = require("../controllers/items");
 
 router.post("/", itemsCtrl.create);
 router.get("/", itemsCtrl.index);
+router.get("/category/:category", itemsCtrl.indexCategory);
 router.get("/:id", itemsCtrl.show);
 router.delete("/:id", itemsCtrl.deleteOne);
 router.patch("/:id", itemsCtrl.update);
