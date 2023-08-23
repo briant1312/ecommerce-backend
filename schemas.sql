@@ -42,5 +42,6 @@ CREATE TABLE items (
 
 CREATE TABLE order_items (
     order_id INT REFERENCES orders(id) ON DELETE CASCADE,
-    item_id INT REFERENCES items(id) ON DELETE CASCADE
+    item_id INT REFERENCES items(id) ON DELETE CASCADE,
+    qty INT DEFAULT 1
 );
