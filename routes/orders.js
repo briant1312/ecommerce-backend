@@ -4,9 +4,9 @@ const ordersCtrl = require("../controllers/orders");
 const checkToken = require("../config/checkToken");
 const ensureLoggedIn = require("../config/ensureLoggedIn");
 
-router.post("/", checkToken, ensureLoggedIn, ordersCtrl.create);
-router.patch("/:id", checkToken, ensureLoggedIn, ordersCtrl.completeOrder);
-router.post("/add/:itemId", checkToken, ensureLoggedIn, ordersCtrl.addItemToOrder);
-router.delete("/remove/:itemId", checkToken, ensureLoggedIn, ordersCtrl.removeItemFromOrder);
+router.get("/cart", checkToken, ensureLoggedIn, ordersCtrl.getUserCart);
+router.patch("/:orderId", checkToken, ensureLoggedIn, ordersCtrl.completeOrder);
+router.post("/add", checkToken, ensureLoggedIn, ordersCtrl.addItemToOrder);
+router.delete("/remove", checkToken, ensureLoggedIn, ordersCtrl.removeItemFromOrder);
 
 module.exports = router;

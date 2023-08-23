@@ -5,19 +5,20 @@ function checkToken(req, res, next) {
     if(!token) {
         req.user = null;
         next();
+    } else {
+        token = token.replace("Bearer ", "");
+        jwt.verify(token, process.env.SECRET, (err, decoded) => {
+            if(err) {
+                req.user = null;
+            } else {
+                req.user = decoded.user;
+                req.exp = new Date(decoded.exp * 1000);
+            }
+        })
+
+        next();
     }
     
-    token = token.replace("Bearer ", "");
-    jwt.verify(token, process.env.SECRET, (err, decoded) => {
-        if(err) {
-            req.user = null;
-        } else {
-            req.user = decoded.user;
-            req.exp = new Date(decoded.exp * 1000);
-        }
-    })
-
-    next();
 }
 
 module.exports = checkToken;
