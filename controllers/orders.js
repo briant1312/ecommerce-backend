@@ -38,6 +38,21 @@ async function completeOrder(req, res) {
     }
 }
 
+async function getItemCount(req, res) {
+    const { orderId } = req.params;
+
+    try {
+        const count = await db.oneOrNone(
+            'SELECT COUNT(*) FROM order_items WHERE (order_id=$1)',
+            [orderId]
+        )
+        res.json(count.count);
+    } catch (error) {
+        // res.status(400).json("error creating order");
+        res.status(400).json(error.message);
+    }
+}
+
 async function addItemToOrder(req, res) {
     const userId = req.user.id;
     const { itemId, orderId, qty } = req.body;
@@ -126,9 +141,30 @@ async function removeItemFromOrder(req, res) {
     }
 }
 
+async function getItemsFromOrder(req, res) {
+    const { orderId } = req.params;
+
+    try {
+        const items = await db.manyOrNone(
+            `SELECT name, image_url, price, order_items.qty 
+            FROM items 
+            JOIN order_items 
+            ON item_id = items.id 
+            WHERE (order_id=$1)`,
+            [orderId]
+        )
+        res.json(items);
+    } catch (error) {
+        // res.status(400).json("error creating order");
+        res.status(400).json(error.message);
+    }
+}
+
 module.exports = {
     getUserCart,
     completeOrder,
     addItemToOrder,
     removeItemFromOrder,
+    getItemCount,
+    getItemsFromOrder,
 }
