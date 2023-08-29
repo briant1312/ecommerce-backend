@@ -146,7 +146,7 @@ async function getItemsFromOrder(req, res) {
 
     try {
         const items = await db.manyOrNone(
-            `SELECT name, image_url, price, order_items.qty 
+            `SELECT name, image_url, price, order_items.qty, id
             FROM items 
             JOIN order_items 
             ON item_id = items.id 
