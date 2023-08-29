@@ -42,11 +42,13 @@ async function getItemCount(req, res) {
     const { orderId } = req.params;
 
     try {
-        const count = await db.oneOrNone(
-            'SELECT COUNT(*) FROM order_items WHERE (order_id=$1)',
+        const data = await db.manyOrNone(
+            'SELECT qty FROM order_items WHERE (order_id=$1)',
             [orderId]
         )
-        res.json(count.count);
+        let count = 0;
+        data.forEach(num => count += num.qty);
+        res.json(count);
     } catch (error) {
         // res.status(400).json("error creating order");
         res.status(400).json(error.message);
