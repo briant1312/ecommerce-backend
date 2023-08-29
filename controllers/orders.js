@@ -56,6 +56,9 @@ async function getItemCount(req, res) {
 async function addItemToOrder(req, res) {
     const userId = req.user.id;
     const { itemId, orderId, qty } = req.body;
+    if (!itemId || !orderId || !qty) {
+        return res.status(400).json("itemId, orderId, and qty are required to be passed in");
+    }
 
     try {
         const order = await db.one(
@@ -97,6 +100,9 @@ async function addItemToOrder(req, res) {
 async function removeItemFromOrder(req, res) {
     const userId = req.user.id;
     const { itemId, orderId, qty } = req.body;
+    if (!itemId || !orderId || !qty) {
+        return res.status(400).json("itemId, orderId, and qty are required to be passed in");
+    }
 
     try {
         const order = await db.one(
