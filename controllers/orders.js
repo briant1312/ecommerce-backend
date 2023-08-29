@@ -31,7 +31,7 @@ async function completeOrder(req, res) {
             'UPDATE orders SET is_completed = true WHERE (id=$1 AND user_id=$2) RETURNING *',
             [orderId, userId]
         )
-        res.json(order);
+        res.sendStatus(204);
     } catch (error) {
         // res.status(400).json("error creating order");
         res.status(400).json(error.message);
@@ -42,11 +42,13 @@ async function getItemCount(req, res) {
     const { orderId } = req.params;
 
     try {
-        const count = await db.oneOrNone(
-            'SELECT COUNT(*) FROM order_items WHERE (order_id=$1)',
+        const data = await db.manyOrNone(
+            'SELECT qty FROM order_items WHERE (order_id=$1)',
             [orderId]
         )
-        res.json(count.count);
+        let count = 0;
+        data.forEach(num => count += num.qty);
+        res.json(count);
     } catch (error) {
         // res.status(400).json("error creating order");
         res.status(400).json(error.message);
@@ -56,6 +58,9 @@ async function getItemCount(req, res) {
 async function addItemToOrder(req, res) {
     const userId = req.user.id;
     const { itemId, orderId, qty } = req.body;
+    if (!itemId || !orderId || !qty) {
+        return res.status(400).json("itemId, orderId, and qty are required to be passed in");
+    }
 
     try {
         const order = await db.one(
@@ -97,6 +102,9 @@ async function addItemToOrder(req, res) {
 async function removeItemFromOrder(req, res) {
     const userId = req.user.id;
     const { itemId, orderId, qty } = req.body;
+    if (!itemId || !orderId || !qty) {
+        return res.status(400).json("itemId, orderId, and qty are required to be passed in");
+    }
 
     try {
         const order = await db.one(
@@ -146,7 +154,7 @@ async function getItemsFromOrder(req, res) {
 
     try {
         const items = await db.manyOrNone(
-            `SELECT name, image_url, price, order_items.qty 
+            `SELECT name, image_url, price, order_items.qty, id
             FROM items 
             JOIN order_items 
             ON item_id = items.id 
