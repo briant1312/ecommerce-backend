@@ -31,7 +31,7 @@ async function completeOrder(req, res) {
             'UPDATE orders SET is_completed = true WHERE (id=$1 AND user_id=$2) RETURNING *',
             [orderId, userId]
         )
-        res.json(order);
+        res.sendStatus(204);
     } catch (error) {
         // res.status(400).json("error creating order");
         res.status(400).json(error.message);
