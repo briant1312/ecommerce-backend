@@ -42,13 +42,11 @@ async function getItemCount(req, res) {
     const { orderId } = req.params;
 
     try {
-        const data = await db.manyOrNone(
-            'SELECT qty FROM order_items WHERE (order_id=$1)',
+        const count = await db.oneOrNone(
+            'SELECT sum(qty) as total_qty FROM order_items WHERE (order_id=$1)',
             [orderId]
         )
-        let count = 0;
-        data.forEach(num => count += num.qty);
-        res.json(count);
+        res.json(count.total_qty);
     } catch (error) {
         // res.status(400).json("error creating order");
         res.status(400).json(error.message);
@@ -168,6 +166,26 @@ async function getItemsFromOrder(req, res) {
     }
 }
 
+async function getUserCompletedOrders(req, res) {
+    const userId = req.user.id;
+
+    try {
+        const orders = await db.manyOrNone(
+            `SELECT orders.id, sum(price * order_items.qty) AS total_price, sum(order_items.qty) as total_items
+            FROM orders
+            INNER JOIN order_items ON orders.id = order_items.order_id
+            INNER JOIN items ON order_items.item_id = items.id
+            WHERE (is_completed = true AND user_id = $1)
+            GROUP BY orders.id`,
+            [userId]
+        )
+        res.json(orders);
+    } catch (error) {
+        // res.status(400).json("error creating order");
+        res.status(400).json(error.message);
+    }
+}
+
 module.exports = {
     getUserCart,
     completeOrder,
@@ -175,4 +193,5 @@ module.exports = {
     removeItemFromOrder,
     getItemCount,
     getItemsFromOrder,
+    getUserCompletedOrders,
 }
