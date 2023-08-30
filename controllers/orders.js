@@ -175,7 +175,7 @@ async function getUserCompletedOrders(req, res) {
             FROM orders
             INNER JOIN order_items ON orders.id = order_items.order_id
             INNER JOIN items ON order_items.item_id = items.id
-            WHERE is_completed = true
+            WHERE (is_completed = true AND user_id = $1)
             GROUP BY orders.id`,
             [userId]
         )
