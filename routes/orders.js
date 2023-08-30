@@ -4,6 +4,7 @@ const ordersCtrl = require("../controllers/orders");
 const checkToken = require("../config/checkToken");
 const ensureLoggedIn = require("../config/ensureLoggedIn");
 
+router.get("/", checkToken, ensureLoggedIn, ordersCtrl.getUserCompletedOrders);
 router.get("/cart", checkToken, ensureLoggedIn, ordersCtrl.getUserCart);
 router.get("/count/:orderId", checkToken, ensureLoggedIn, ordersCtrl.getItemCount);
 router.get("/items/:orderId", checkToken, ensureLoggedIn, ordersCtrl.getItemsFromOrder);
