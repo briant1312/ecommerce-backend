@@ -156,7 +156,8 @@ async function getItemsFromOrder(req, res) {
             FROM items 
             JOIN order_items 
             ON item_id = items.id 
-            WHERE (order_id=$1)`,
+            WHERE (order_id=$1)
+            ORDER BY id`,
             [orderId]
         )
         res.json(items);
