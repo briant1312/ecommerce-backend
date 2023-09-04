@@ -35,7 +35,7 @@ CREATE TABLE items (
     name VARCHAR(50) NOT NULL,
     description VARCHAR(250) NOT NULL,
     qty INT DEFAULT 0,
-    image_url VARCHAR(100) DEFAULT 'https://tacm.com/wp-content/uploads/2018/01/no-image-available.jpeg',
+    image_url VARCHAR(250) DEFAULT 'https://tacm.com/wp-content/uploads/2018/01/no-image-available.jpeg',
     price NUMERIC(7, 2) DEFAULT 9.99,
     category INT REFERENCES item_category(id)
 );
