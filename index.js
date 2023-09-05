@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(logger("dev"));
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN }));
 app.use(express.json());
 app.use("/users", require("./routes/users"));
 app.use("/items", require("./routes/items"));
