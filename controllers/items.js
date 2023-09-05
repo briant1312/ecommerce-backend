@@ -24,8 +24,7 @@ async function create(req, res) {
         );
         res.json(newItem);
     } catch (error) {
-        // res.status(400).json("error creating item");
-        res.status(400).json(error.message);
+        res.status(400).json("error creating item");
     }
 }
 
@@ -74,7 +73,7 @@ async function deleteOne(req, res) {
         );
         res.sendStatus(204);
     } catch (error) {
-        res.status(400).json("error fetching item");
+        res.status(400).json("error deleting item");
     }
 }
 
@@ -101,7 +100,6 @@ async function update(req, res) {
         res.json(updatedItem);
     } catch (error) {
         res.status(400).json("error updating item");
-        // res.status(400).json(error.message);
     }
 }
 
