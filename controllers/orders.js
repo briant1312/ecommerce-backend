@@ -16,8 +16,7 @@ async function getUserCart(req, res) {
         }
         res.json(order);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error getting user cart");
     }
 }
 
@@ -27,14 +26,13 @@ async function completeOrder(req, res) {
     const userId = req.user.id;
 
     try {
-        const order = await db.oneOrNone(
+        await db.oneOrNone(
             'UPDATE orders SET is_completed = true WHERE (id=$1 AND user_id=$2) RETURNING *',
             [orderId, userId]
         )
         res.sendStatus(204);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error completing order");
     }
 }
 
@@ -48,8 +46,7 @@ async function getItemCount(req, res) {
         )
         res.json(count.total_qty);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error getting item count");
     }
 }
 
@@ -92,8 +89,7 @@ async function addItemToOrder(req, res) {
         )
         res.sendStatus(204);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error adding item to order");
     }
 }
 
@@ -142,8 +138,7 @@ async function removeItemFromOrder(req, res) {
         )
         res.sendStatus(204);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error removing item from order");
     }
 }
 
@@ -162,8 +157,7 @@ async function getItemsFromOrder(req, res) {
         )
         res.json(items);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error getting order items");
     }
 }
 
@@ -182,8 +176,7 @@ async function getUserCompletedOrders(req, res) {
         )
         res.json(orders);
     } catch (error) {
-        // res.status(400).json("error creating order");
-        res.status(400).json(error.message);
+        res.status(400).json("error retreiving orders");
     }
 }
 

@@ -33,7 +33,6 @@ async function create(req, res) {
         res.json(token);
     } catch (error) {
         res.status(400).json("Error creating user");
-        // res.status(400).json(error.message);
     }
 }
 
@@ -58,7 +57,6 @@ async function logIn(req, res) {
     }
 }
 
-// this route is only for testing and should be removed
 async function index(req, res) {
     try {
         const users = await db.any('SELECT * FROM users');
